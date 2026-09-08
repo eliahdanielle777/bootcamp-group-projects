@@ -10,7 +10,7 @@ FLEET = {
     "submarine": 3,
     "destroyer": 2,
 }
-
+eliah=[]
 
 def parse_state(text):
     ships_str, shots_str = [part.strip() for part in text.split("|")]
