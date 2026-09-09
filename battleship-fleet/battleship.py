@@ -11,10 +11,6 @@ FLEET = {
     "destroyer": 2,
 }
 
-muhammad = [1,2,3]
-hannah = "testing"
-eliah=[1,2,3]
-google = "fun"
 
 def parse_state(text):
     ships_str, shots_str = [part.strip() for part in text.split("|")]
@@ -35,3 +31,9 @@ def generate_legal_shots(state):
 
 def apply_shot(state, cell):
     raise NotImplementedError("This function is not implemented yet.")
+
+muhammad = [1,2,3]
+hannah = "testing"
+eliah=[1,2,3]
+google = "fun"
+hafsa=20
