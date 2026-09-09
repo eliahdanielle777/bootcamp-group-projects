@@ -14,6 +14,7 @@ FLEET = {
 muhammad = [1,2,3]
 hannah = "testing"
 eliah=[1,2,3]
+google = "fun"
 
 def parse_state(text):
     ships_str, shots_str = [part.strip() for part in text.split("|")]
