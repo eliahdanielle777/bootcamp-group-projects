@@ -1,42 +1,89 @@
+# Store all possible column letters on the board. [Eliah]
 COLUMNS = "ABCDEFGHIJ"
+
+# Store all possible row numbers on the board.
 ROWS = range(1, 11)
 
+# Create every possible cell, such as A1, A2, B1, B2, etc.
 BOARD_CELLS = [f"{column}{row}" for column in COLUMNS for row in ROWS]
 
+# Store each ship and its required size.
 FLEET = {
-    "carrier": 5,
-    "battleship": 4,
-    "cruiser": 3,
-    "submarine": 3,
-    "destroyer": 2,
+    "carrier": 5,       # Carrier takes 5 cells.
+    "battleship": 4,    # Battleship takes 4 cells.
+    "cruiser": 3,       # Cruiser takes 3 cells.
+    "submarine": 3,     # Submarine takes 3 cells.
+    "destroyer": 2,     # Destroyer takes 2 cells.
 }
 
 
+# Convert the text version of a game state into a dictionary. [Eliah]
 def parse_state(text):
-    ships_str, shots_str = [part.strip() for part in text.split("|")]
 
-    ships = {}
-    for entry in ships_str.split(";"):
-        name, cells = entry.split(":")
-        ships[name.strip()] = [cell.strip() for cell in cells.split(",")]
+    # Split the text into the ship information and shot information.
+    
 
-    shots = [cell.strip() for cell in shots_str.split(",") if cell.strip()]
+    # Create an empty dictionary to store the ships.
+    
 
-    return ...
+    # Go through each ship in the ship section.
+    
+
+        # Split the ship name from the cells it occupies.
+        
+
+        # Remove extra spaces and store the ship's cells.
+        
+
+    # Remove extra spaces and turn the shots into a list.
+    
+
+    # Return the complete game state.
+    
 
 
+# Find all cells where the player can legally shoot.[Hafsa and Lawerence]
 def generate_legal_shots(state):
-    raise NotImplementedError("This function is not implemented yet.")
+
+    # Create an empty list for legal shots.
+    
+
+    # Check every cell on the board.
+    
+
+        # Only add the cell if it has not already been shot.
+        
+
+            # Add the cell to the legal shots list.
+            
+
+    # Return all cells that can still be shot.
+    
 
 
-def apply_shot(state, cell):
-    raise NotImplementedError("This function is not implemented yet.")
+# Apply a shot to the current game state.[Hannah and Muhammad]
+def apply_shot(state,cell):
 
-muhammad = [1,2,3]
-hannah = "testing"
-eliah=[1,2,3]
-google = "fun"
-hafsa=20
-hannah = 30
-hafsa = [1,2,3]
-testing = "testing push"
+    # Add the new shot to the list of previous shots.
+    
+
+    # Check every ship on the board.
+    
+
+        # Check whether the shot hit this ship.
+        
+
+            # Remove the shot cell from the ship.
+            
+
+            # If no cells remain, the ship has been sunk.
+            
+
+                # Tell the game that the ship was sunk.
+                
+
+            # Tell the game that the ship was hit.
+            
+
+    # If the shot did not hit any ship, it was a miss.
+    
