@@ -1,20 +1,24 @@
-# Store all possible column letters on the board. [Eliah]
-COLUMNS = "ABCDEFGHIJ"
+# Store all possible column letters on the board.
+COLUMNS = "ABCDEFGHIJ" # This stores A-J as a string of 10 letters
 
 # Store all possible row numbers on the board.
-ROWS = range(1, 11)
+ROWS = range(1, 11) # This stores 1-10 as a numbers in a range (integers)
 
 # Create every possible cell, such as A1, A2, B1, B2, etc.
-BOARD_CELLS = [f"{column}{row}" for column in COLUMNS for row in ROWS]
+BOARD_CELLS = [ #This is the start of list syntax
+    f"{column}{row}" # This f-string puts the column and row together (A1,A2,A3...)
+    for column in COLUMNS # This for-loop iterates through the string, separating the letters (column=A)
+    for row in ROWS # This for_loop iterates through the range, separating the numbers (row=1)
+] # This is the end of list syntax
 
 # Store each ship and its required size.
-FLEET = {
-    "carrier": 5,       # Carrier takes 5 cells.
-    "battleship": 4,    # Battleship takes 4 cells.
-    "cruiser": 3,       # Cruiser takes 3 cells.
-    "submarine": 3,     # Submarine takes 3 cells.
-    "destroyer": 2,     # Destroyer takes 2 cells.
-}
+FLEET = { # This is the start of dictionary syntax
+    "carrier": 5, # This is a key-value pair in which "carrier" is the key and 5 is the value
+    "battleship": 4, # This is a key-value pair in which "battleship" is the key and 4 is the value
+    "cruiser": 3, # This is a key-value pair in which "cruiser" is the key and 3 is the value
+    "submarine": 3, # This is a key-value pair in which "submarine" is the key and 3 is the value
+    "destroyer": 2, # This is a key-value pair in which "destroyer" is the key and 2 is the value
+} # This is the end of dictionary syntax
 
 # Convert the text version of a game state into a dictionary.
 def parse_state(text):
