@@ -63,7 +63,7 @@ def apply_shot(state,cell):
     if cell not in BOARD_CELLS: 
         raise ValueError("invalid cell") 
         #check whether the cell has already been shot.
-    if cell in state["shots"]: 
+    elif cell in state["shots"]: 
         raise ValueError("cell has already been fired at.") 
         #add the new shot to the list of previous shots. 
     state["shots"].append(cell) 
