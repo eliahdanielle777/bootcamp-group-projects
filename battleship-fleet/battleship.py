@@ -20,6 +20,19 @@ FLEET = { # This is the start of dictionary syntax
     "destroyer": 2, # This is a key-value pair in which "destroyer" is the key and 2 is the value
 } # This is the end of dictionary syntax
 
+# Convert a cell such as "A1" into a column and row.
+def cell_position(cell): # This is a function that will return coordinants as a tuple 
+
+    # Get the column letter.
+    column = cell[0] # This takes the first character of the coordinants for the string
+
+    # Get the row number.
+    row = int(cell[1:]) # This syntax takes the very last character from the string and makes it a number
+
+    # Return the position.
+    return column, row # This creates the tuple using the comma and saves the result to the programme
+
+
 # Convert the text version of a game state into a dictionary.
 def parse_state(text):
 
