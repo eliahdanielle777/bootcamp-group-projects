@@ -35,7 +35,7 @@ def parse_state(text):
         # Remove extra spaces and store the ship's cells.
         
 
-    # Remove extra spaces and turn the shots into a list.
+    # Remove extra spaces and tdef display_result(result):urn the shots into a list.
     
 
     # Return the complete game state.
@@ -88,4 +88,32 @@ def apply_shot(state,cell):
             
 
     # If the shot did not hit any ship, it was a miss.
-    
+
+def all_ships_sunk(state):
+    for ship_cells in state["ships"].values():
+
+        for cell in ship_cells:
+            if cell not in state["shots"]:
+                return False
+            
+    return True
+          
+def display_result(result):
+         
+    if result == "hit":
+        return "Hit!"
+
+    elif result == "miss":
+        return "Miss!"
+
+    elif result.startswith("sunk:"):
+        ship_name = result.split(":")[1]
+        return f"Hit! You sank the {ship_name}!"
+
+    else:
+        return "Unknown result."
+
+if all_ships_sunk(state):
+    print("Fleet defeated! Game over!")
+else:
+    print("Fleet undefeated. The game continues!")

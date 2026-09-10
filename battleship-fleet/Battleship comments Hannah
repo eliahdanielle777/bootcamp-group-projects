@@ -1,0 +1,44 @@
+COLUMNS = "ABCDEFGHIJ"
+ROWS = range(1, 11)
+
+BOARD_CELLS = [f"{column}{row}" for column in COLUMNS for row in ROWS]
+
+FLEET = {
+    "carrier": 5,
+    "battleship": 4,
+    "cruiser": 3,
+    "submarine": 3,
+    "destroyer": 2,
+}
+
+
+def parse_state(text):
+    ships_str, shots_str = [part.strip() for part in text.split("|")]
+
+    ships = {}
+    for entry in ships_str.split(";"):
+        name, cells = entry.split(":")
+        ships[name.strip()] = [cell.strip() for cell in cells.split(",")]
+
+    shots = [cell.strip() for cell in shots_str.split(",") if cell.strip()]
+
+    return {
+        "ships": ships,
+        "shots": shots,
+    }
+
+
+def generate_legal_shots(state):
+    return [cell for cell in BOARD_CELLS if cell not in state["shots"]]
+
+
+def apply_shot(state, cell):
+    if cell not in BOARD_CELLS:
+        raise ValueError(f"Invalid board cell: {cell}")
+
+    if cell in state["shots"]:
+        raise ValueError(f"Cell has already been shot: {cell}")
+
+    state["shots"].append(cell)
+
+    return state
