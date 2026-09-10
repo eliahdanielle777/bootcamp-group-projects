@@ -56,7 +56,7 @@ def generate_legal_shots(state):
     return legal_shots
 
 
-# Apply a shot to the current game state.[Hannah and Muhammad]
+# Apply a shot to the current game state.[Muhammad]
 def apply_shot(state,cell):
     #Remove extra spaces from the cell name 
     cell = cell.strip() #check whether the cell is a valid board cell 
@@ -92,7 +92,7 @@ def apply_shot(state,cell):
             #return miss when the shot did not hit any ship. 
             return{"result":"miss","fleet_defeated":False}
 
-# This function checks whether every ship in the player's fleet has been completely hit.
+# This function checks whether every ship in the player's fleet has been completely hit.[Hannah]
 def all_ships_sunk(state):
 
     # state["ships"] contains all of the ships and the board cells they occupy.
@@ -118,8 +118,7 @@ def all_ships_sunk(state):
     return True
 
 
-# This function converts the result from apply_shot()
-# into a message that is easier for the player to understand.
+# This function converts the result from apply_shot() into a message that is easier for the player to understand.[Hannah]
 def display_result(result):
 
     # Check if the result from apply_shot() was "hit".
