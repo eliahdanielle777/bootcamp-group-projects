@@ -45,7 +45,9 @@ def parse_state(text):
 # Find all cells where the player can legally shoot.[Hafsa and Lawerence]
 def generate_legal_shots(state):
 
-    # Create an empty list for legal shots.
+    #I have created an  empty list for legal shots.
+        legal_shots = []
+
     
 
     # Check every cell on the board.
