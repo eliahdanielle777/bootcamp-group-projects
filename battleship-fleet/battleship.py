@@ -16,30 +16,44 @@ FLEET = {
     "destroyer": 2,     # Destroyer takes 2 cells.
 }
 
-
-# Convert the text version of a game state into a dictionary. [Eliah]
+# Convert the text version of a game state into a dictionary.
 def parse_state(text):
 
     # Split the text into the ship information and shot information.
-    
+    ships_str, shots_str = text.split("|")
 
     # Create an empty dictionary to store the ships.
-    
+    ships = {}
 
     # Go through each ship in the ship section.
-    
+    for ship in ships_str.strip().split(";"):
+
+        # Skip empty ship entries.
+        if not ship.strip():
+            continue
 
         # Split the ship name from the cells it occupies.
-        
+        name, cells = ship.split(":")
 
         # Remove extra spaces and store the ship's cells.
-        
+        ships[name.strip()] = [
+            cell.strip()
+            for cell in cells.split(",")
+            if cell.strip()
+        ]
 
-    # Remove extra spaces and tdef display_result(result):urn the shots into a list.
-    
+    # Remove extra spaces and turn the shots into a list.
+    shots = [
+        shot.strip()
+        for shot in shots_str.strip().split(",")
+        if shot.strip()
+    ]
 
     # Return the complete game state.
-    
+    return {
+        "ships": ships,
+        "shots": shots
+    }
 
 
 # Find all cells where the player can legally shoot.[Hafsa and Lawerence]
