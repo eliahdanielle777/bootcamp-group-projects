@@ -50,7 +50,11 @@ def generate_legal_shots(state):
 
     
 
-    # Check every cell on the board.
+    # Now check every cell on the board
+     for cell in BOARD_CELLS:
+
+        pass
+
     
 
         # Only add the cell if it has not already been shot.
