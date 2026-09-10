@@ -93,31 +93,78 @@ def apply_shot(state,cell):
 
     # If the shot did not hit any ship, it was a miss.
 
+# This function checks whether every ship in the player's fleet has been completely hit.
 def all_ships_sunk(state):
+
+    # state["ships"] contains all of the ships and the board cells they occupy.
+    # .values() gives us only the list of cells for each ship.
     for ship_cells in state["ships"].values():
 
+        # Go through every cell belonging to the current ship.
+        # For example, a carrier might have A1, A2, A3, A4 and A5.
         for cell in ship_cells:
+
+            # Check whether this particular ship cell has been shot at.
+            # state["shots"] contains all the cells that the player has fired at.
             if cell not in state["shots"]:
+
+                # If even ONE ship cell has not been shot,
+                # then that ship has not been completely destroyed.
+                # Therefore, the entire fleet cannot be defeated yet.
                 return False
-            
+
+    # If we reach this point, we checked every cell of every ship
+    # and every ship cell has been shot.
+    # Therefore, the entire fleet has been defeated.
     return True
-          
+
+
+# This function converts the result from apply_shot()
+# into a message that is easier for the player to understand.
 def display_result(result):
-         
+
+    # Check if the result from apply_shot() was "hit".
     if result == "hit":
+
+        # Tell the player that their shot hit a ship.
         return "Hit!"
 
+    # If the result was not "hit", check whether it was "miss".
     elif result == "miss":
+
+        # Tell the player that their shot missed all ships.
         return "Miss!"
 
+    # If it was not a hit or miss, check whether a ship was sunk.
+    # startswith("sunk:") checks whether the result begins with "sunk:".
     elif result.startswith("sunk:"):
+
+        # Split the result at the ":" character.
+        # For example, "sunk:carrier" becomes ["sunk", "carrier"].
         ship_name = result.split(":")[1]
+
+        # Create a message using the name of the ship that was sunk.
+        # The f before the string allows us to insert ship_name.
         return f"Hit! You sank the {ship_name}!"
 
+    # If the result was not hit, miss, or sunk,
+    # then something unexpected happened.
     else:
+
+        # Return a message explaining that the result was unknown.
         return "Unknown result."
 
+
+# Call the all_ships_sunk() function and give it our current game state.
+# The function will return either True or False.
 if all_ships_sunk(state):
+
+    # This runs if all_ships_sunk() returned True.
+    # It means every ship in the fleet has been destroyed.
     print("Fleet defeated! Game over!")
+
 else:
+
+    # This runs if all_ships_sunk() returned False.
+    # It means at least one ship cell has not been hit yet.
     print("Fleet undefeated. The game continues!")
