@@ -44,23 +44,12 @@ def parse_state(text):
 
 # Find all cells where the player can legally shoot.[Hafsa and Lawerence]
 def generate_legal_shots(state):
+    legal_shots = [] #I have created an  empty list for legal shots.
 
-    #I have created an  empty list for legal shots.
-        legal_shots = []
-
-    
-
-    # Now check every cell on the board
-     for cell in BOARD_CELLS:
-
-        pass
-
-    
-
-        # Only add the cell if it has not already been shot.
+    for cell in BOARD_CELLS:# Now check every cell on the board
         
-
-            # Add the cell to the legal shots list.
+        if cell not in state["shots"]: # Only add the cell if it has not already been shot.
+            legal_shots.append(cell) # Add the cell to the legal shots list.
             
 
     # Return all cells that can still be shot.
