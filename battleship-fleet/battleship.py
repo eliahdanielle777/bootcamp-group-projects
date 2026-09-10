@@ -58,29 +58,39 @@ def generate_legal_shots(state):
 
 # Apply a shot to the current game state.[Hannah and Muhammad]
 def apply_shot(state,cell):
-
-    # Add the new shot to the list of previous shots.
-    
-
-    # Check every ship on the board.
-    
-
-        # Check whether the shot hit this ship.
-        
-
-            # Remove the shot cell from the ship.
-            
-
-            # If no cells remain, the ship has been sunk.
-            
-
-                # Tell the game that the ship was sunk.
-                
-
-            # Tell the game that the ship was hit.
-            
-
-    # If the shot did not hit any ship, it was a miss.
+    #Remove extra spaces from the cell name 
+    cell = cell.strip() #check whether the cell is a valid board cell 
+    if cell not in BOARD_CELLS: 
+        raise ValueError("invalid cell") 
+        #check whether the cell has already been shot.
+    if cell in state["shots"]: 
+        raise ValueError("cell has already been fired at.") 
+        #add the new shot to the list of previous shots. 
+    state["shots"].append(cell) 
+        #check every ship on the board. 
+    for ship,cells in state["ships"].items(): 
+        #check whether the shot hit this ship. 
+        if cell in cells: 
+            #check whether every cell belonging to the ship has been shot. 
+            ship_sunk = all(ship_cell in state["shots"] for ship_cell in cells) 
+            #check whether the ship has been completely destroyed. 
+            if ship_sunk: 
+                #assume that the entire fleet has been defeated. 
+                fleet_defeated = True 
+                #check every ship in the fleet. 
+                for ship_cells in state["ships"].values(): 
+                    #check whether every cell of this ship has been shot. 
+                    if not all(ship cell in state["shots"] for ship_cell in ship_cells): 
+                        #The fleet is not defeated if one ship remains. 
+                        fleet_defeated = False 
+                        #stop checking the remaining ships 
+                        break 
+                    #The sunk result and fleet status. 
+                    return {"result":f"sunk:{ship}","fleet_defeated":fleet_defeated} 
+                #a normal hit because the ship still has cells remaining 
+                return {"result":"hit","fleet_defeated":False} 
+            #return miss when the shot did not hit any ship. 
+            return{"result":"miss","fleet_defeated":False}
 
 # This function checks whether every ship in the player's fleet has been completely hit.
 def all_ships_sunk(state):
