@@ -53,7 +53,7 @@ def generate_legal_shots(state):
             
 
     # Return all cells that can still be shot.
-    
+    return legal_shots
 
 
 # Apply a shot to the current game state.[Hannah and Muhammad]
