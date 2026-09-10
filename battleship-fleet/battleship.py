@@ -58,11 +58,12 @@ def generate_legal_shots(state):
 
 # Apply a shot to the current game state.[Muhammad]
 def apply_shot(state,cell):
-    #Remove extra spaces from the cell name 
-    cell = cell.strip() #check whether the cell is a valid board cell 
+    #Remove extra spaces from the cell name and accounts for lowercase letters.
+    #check whether the cell is a valid board cell.
+    cell = cell.strip().upper() 
     if cell not in BOARD_CELLS: 
         raise ValueError("invalid cell") 
-        #check whether the cell has already been shot.
+    #check whether the cell has already been shot.
     elif cell in state["shots"]: 
         raise ValueError("cell has already been fired at.") 
         #add the new shot to the list of previous shots. 
@@ -121,48 +122,81 @@ def all_ships_sunk(state):
 # This function converts the result from apply_shot() into a message that is easier for the player to understand.[Hannah]
 def display_result(result):
 
+    # Get the actual results from the dictionary.
+    shot_result = result["result"]
+
     # Check if the result from apply_shot() was "hit".
-    if result == "hit":
+    if shot_result == "hit":
 
         # Tell the player that their shot hit a ship.
         return "Hit!"
 
     # If the result was not "hit", check whether it was "miss".
-    elif result == "miss":
+    elif shot_result == "miss":
 
         # Tell the player that their shot missed all ships.
         return "Miss!"
 
     # If it was not a hit or miss, check whether a ship was sunk.
     # startswith("sunk:") checks whether the result begins with "sunk:".
-    elif result.startswith("sunk:"):
+    elif shot_result.startswith("sunk:"):
 
         # Split the result at the ":" character.
         # For example, "sunk:carrier" becomes ["sunk", "carrier"].
-        ship_name = result.split(":")[1]
+        # Get the name of the ship after "sunk:". 
+        ship_name = shot_result.split(":")[1]
 
         # Create a message using the name of the ship that was sunk.
         # The f before the string allows us to insert ship_name.
         return f"Hit! You sank the {ship_name}!"
 
     # If the result was not hit, miss, or sunk,
-    # then something unexpected happened.
+    # then the result is not recognised.
     else:
 
         # Return a message explaining that the result was unknown.
         return "Unknown result."
+    
+while True:
+
+    # Find all the cells that have not been shot yet.
+    legal_shots = generate_legal_shots(state)
+
+    # Show the player which cells they can choose from.
+    print("Legal shots:", legal_shots)
+    
+    # Ask the player which cell they want to shoot.
+    cell = input("Enter a cell to shoot (for example A1): ")
+
+    # Try to apply the player's shot.
+    try:
+    
+        # Apply a shot to the game.
+        result = apply_shot(state, cell)
+
+    # If the player enters an invalid or repeated cell,
+    # show the error message and ask them to try again.
+    except ValueError as error:
+        print(error)
+        continue
+
+    # Display the result of the shot.
+    print(display_result(result))
+
+    # Call the all_ships_sunk() function and give it our current game state.
+    # The function will return either True or False.
+    if all_ships_sunk(state):
+
+        # This runs if all_ships_sunk() returned True.
+        # It means every ship in the fleet has been destroyed.
+        print("Fleet defeated! Game over!")
+
+    # Stop the game because the player has won.
+        break
 
 
-# Call the all_ships_sunk() function and give it our current game state.
-# The function will return either True or False.
-if all_ships_sunk(state):
+    else:
 
-    # This runs if all_ships_sunk() returned True.
-    # It means every ship in the fleet has been destroyed.
-    print("Fleet defeated! Game over!")
-
-else:
-
-    # This runs if all_ships_sunk() returned False.
-    # It means at least one ship cell has not been hit yet.
-    print("Fleet undefeated. The game continues!")
+        # This runs if all_ships_sunk() returned False.
+        # It means at least one ship cell has not been hit yet.
+        print("Fleet undefeated. The game continues!")
