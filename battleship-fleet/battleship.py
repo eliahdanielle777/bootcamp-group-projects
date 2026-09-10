@@ -32,6 +32,63 @@ def cell_position(cell): # This is a function that will return coordinants as a 
     # Return the position.
     return column, row # This creates the tuple using the comma and saves the result to the programme
 
+# Check whether all cells belonging to a ship form one straight horizontal or vertical line
+def validate_ship_position(cells): # This function checks that the ships are placed linear on the grid
+
+    # Convert every cell into a column and row
+    positions = [ # This is the start of list syntax
+        cell_position(cell) # This changes a list of strings(ex."A1") into list of tuples("A",1)
+        for cell in cells # This for-loop iterates through every cell(coordinant) in the cells(ship) 
+    ]# This is the end of list syntax
+
+    # Get all columns and rows.
+    columns = [position[0] for position in positions] # This variable collects the first element in every tuple in our list
+    rows = [position[1] for position in positions] # This variable collects the second element in every tuple in our list
+
+    # Check whether the ship is horizontal.
+    if len(set(rows)) == 1: # This if-statement removes repeats, then checks that the length of the list is 1
+        
+        # Get the row shared by all cells.
+        row = rows[0] # This extracts the first integer from the rows list 
+
+        # Convert column letters into their numeric positions.
+        column_numbers = [ # This is the start of list syntax
+            COLUMNS.index(column) # The index function calls for the "column" position in the "COLUMN" sequence 
+            for column in columns # This for-loop uses the above code to create a list of column index numbers
+        ] # This is the end of list syntax
+
+        # Sort the columns.
+        column_numbers.sort() # The sort function arranges the number from smallest to largest
+
+        # Check that the columns are consecutive.
+        expected = list( # This is the start of list syntax
+            range( # This range creates a sequence of column numbers
+                column_numbers[0],  # This is the first number in out range because it is the smallest number in the sequence
+                column_numbers[0] + len(cells) # This range ends by adding the length of the sequence to the smallest number 
+            )
+        ) # This is the end of list syntax
+
+        return column_numbers == expected # This return function saves whether or not the 2 lists are identical
+
+    # Check whether the ship is vertical.
+    if len(set(columns)) == 1: # This if-statement removes repeats, then checks that the length of the list is 1
+
+        # Sort the row numbers.
+        rows.sort() # The sort function arranges the number from smallest to largest
+
+        # Check that the rows are consecutive.
+        expected = list( # This is the start of list syntax
+            range( # This range creates a sequence of row numbers
+                rows[0], # This is the first number in out range because it is the smallest number in the sequence
+                rows[0] + len(cells) # This range ends by adding the length of the sequence to the smallest number 
+            )
+        ) # This is the end of list syntax
+
+        return rows == expected # This return function saves whether or not the 2 lists are identical
+
+    # The ship is neither horizontal nor vertical.
+    return False # This returns to the sender that the position is invalid
+
 
 # Convert the text version of a game state into a dictionary.
 def parse_state(text):
