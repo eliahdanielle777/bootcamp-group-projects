@@ -89,7 +89,36 @@ def validate_ship_position(cells): # This function checks that the ships are pla
     # The ship is neither horizontal nor vertical.
     return False # This returns to the sender that the position is invalid
 
-# Validate every ship.
+# Validate the complete game state.
+def validate_state(state): # This function checks that the game state is legal
+
+    # Make sure the state has the expected keys.
+    if "ships" not in state or "shots" not in state: # This ensures state dictionary contains keys - "ships " and "shots"
+        raise ValueError("State must contain ships and shots.") 
+        # If one of the keys are missing, raise ValueError with this string
+
+    ships = state["ships"] # This variable gets the state value stored in "ships"
+    shots = state["shots"]# This variable gets the state value stored in "shots"
+
+    # Make sure ships is a dictionary.
+    if not isinstance(ships, dict): # This if-statement checks if the ship object type is a dictionary.
+        raise ValueError("Ships must be stored in a dictionary.") 
+        # If ships is not a dictionary, raise ValueError with this string
+
+    # Make sure shots is a list.
+    if not isinstance(shots, list): # This if-statement checks if the shots object type is a list.
+        raise ValueError("Shots must be stored in a list.") 
+        # If shots is not a list, raise ValueError with this string
+
+    # Check that every required ship exists.
+    if set(ships.keys()) != set(FLEET.keys()): # This if-statement checks that the game state ships match the fleet ships
+        raise ValueError("State must contain exactly the required ships.") 
+        # If there is a ship missing in the fleet, raise ValueError with this string
+
+    # Keep track of every cell occupied by a ship.
+    occupied_cells = set() # This set will hold the cells occupied by ships
+
+    # Validate every ship.
     for ship, cells in ships.items(): # This for-loop separates the ships and 
 
         # Get the required size of this ship.
@@ -136,6 +165,7 @@ def validate_ship_position(cells): # This function checks that the ships are pla
 
     # The state is valid.
     return True
+
 # Convert the text version of a game state into a dictionary.
 def parse_state(text):
 
