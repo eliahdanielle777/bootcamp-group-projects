@@ -244,47 +244,59 @@ def display_result(result):
 
         # Return a message explaining that the result was unknown.
         return "Unknown result."
-    
-while True:
 
-    # Find all the cells that have not been shot yet.
-    legal_shots = generate_legal_shots(state)
+def play_game():
+    state = {
+        "ships": {
+            "carrier": ["A1", "A2", "A3", "A4", "A5"],
+            "battleship": ["C1", "C2", "C3", "C4"],
+            "cruiser": ["E1", "E2", "E3"],
+            "submarine": ["G1", "G2", "G3"],
+            "destroyer": ["I1", "I2"]
+        },
+        "shots": []
+    }
 
-    # Show the player which cells they can choose from.
-    print("Legal shots:", legal_shots)
-    
-    # Ask the player which cell they want to shoot.
-    cell = input("Enter a cell to shoot (for example A1): ")
+    while True:
 
-    # Try to apply the player's shot.
-    try:
-    
-        # Apply a shot to the game.
-        result = apply_shot(state, cell)
+        # Find all the cells that have not been shot yet.
+        legal_shots = generate_legal_shots(state)
 
-    # If the player enters an invalid or repeated cell,
-    # show the error message and ask them to try again.
-    except ValueError as error:
-        print(error)
-        continue
+        # Show the player which cells they can choose from.
+        print("Legal shots:", legal_shots)
 
-    # Display the result of the shot.
-    print(display_result(result))
+        # Ask the player which cell they want to shoot.
+        cell = input("Enter a cell to shoot (for example A1): ")
 
-    # Call the all_ships_sunk() function and give it our current game state.
-    # The function will return either True or False.
-    if all_ships_sunk(state):
+        # Try to apply the player's shot.
+        try:
 
-        # This runs if all_ships_sunk() returned True.
-        # It means every ship in the fleet has been destroyed.
-        print("Fleet defeated! Game over!")
+            # Apply a shot to the game.
+            result = apply_shot(state, cell)
 
-    # Stop the game because the player has won.
-        break
+        # If the player enters an invalid or repeated cell,
+        # show the error message and ask them to try again.
+        except ValueError as error:
+            print(error)
+            continue
+
+        # Display the result of the shot.
+        print(display_result(result))
+
+        # Check whether all ships have been sunk.
+        if all_ships_sunk(state):
+
+            # The player has destroyed every ship.
+            print("Fleet defeated! Game over!")
+
+            # Stop the game.
+            break
+
+        else:
+
+            # At least one ship remains.
+            print("Fleet undefeated. The game continues!")
 
 
-    else:
-
-        # This runs if all_ships_sunk() returned False.
-        # It means at least one ship cell has not been hit yet.
-        print("Fleet undefeated. The game continues!")
+if __name__ == "__main__":
+    play_game()
