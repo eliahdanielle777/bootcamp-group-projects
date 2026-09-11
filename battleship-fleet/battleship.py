@@ -244,7 +244,11 @@ def display_result(result):
 
         # Return a message explaining that the result was unknown.
         return "Unknown result."
+    
 
+# Create the starting game state.
+# "ships" stores each ship and the cells it occupies.
+# "shots" starts as an empty list because no shots have
 def play_game():
     state = {
         "ships": {
@@ -257,6 +261,7 @@ def play_game():
         "shots": []
     }
 
+    # Keep the game running until the player defeats the entire fleet.
     while True:
 
         # Find all the cells that have not been shot yet.
