@@ -89,7 +89,53 @@ def validate_ship_position(cells): # This function checks that the ships are pla
     # The ship is neither horizontal nor vertical.
     return False # This returns to the sender that the position is invalid
 
+# Validate every ship.
+    for ship, cells in ships.items(): # This for-loop separates the ships and 
 
+        # Get the required size of this ship.
+        required_size = FLEET[ship]
+
+        # Check the number of cells.
+        if len(cells) != required_size:
+            raise ValueError(f"{ship} must occupy {required_size} cells.") 
+            # If the ship isn't the correct length, raise ValueError with this string
+
+        # Check for duplicate cells within the ship.
+        if len(set(cells)) != len(cells):
+            raise ValueError(f"{ship} contains duplicate cells.")
+            # If any of the same cells are selected for a ship , raise ValueError with this string
+
+        # Check that every ship cell exists on the board.
+        for cell in cells:
+            if cell not in BOARD_CELLS:
+                raise ValueError(f"Invalid ship cell: {cell}.") 
+                # If the cell chosen doesn't exist on the board, raise ValueError with this string
+
+            # Check for overlap with another ship.
+            if cell in occupied_cells:
+                raise ValueError(f"Ships cannot overlap at {cell}.") 
+                # If a ship overlaps with another ship, raise ValueError with this string
+
+            occupied_cells.add(cell)
+
+        # Check that the ship is straight and contiguous.
+        if not validate_ship_position(cells):
+            raise ValueError(f"{ship} must occupy consecutive horizontal or vertical cells.") 
+            # If ship coordinants aren't horizontal or vertical, raise ValueError with this string
+
+    # Check for duplicate shots.
+    if len(set(shots)) != len(shots):
+        raise ValueError("Shots cannot contain duplicates.")
+        # If a shot is made more than once, raise ValueError with this string
+
+    # Check that every shot is a valid board cell.
+    for shot in shots:
+        if shot not in BOARD_CELLS:
+            raise ValueError(f"Invalid shot cell: {shot}.")
+            # If shot doesn't exist on the board, raise ValueError with this string
+
+    # The state is valid.
+    return True
 # Convert the text version of a game state into a dictionary.
 def parse_state(text):
 
