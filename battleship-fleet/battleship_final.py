@@ -335,11 +335,6 @@ def play_game():
         },
         "shots": []
     }
-    # Convert the text game state into a dictionary.
-    state = parse_state(starting_state)
-
-    # Check that the game state is valid.
-    validate_state(state)
 
     # Keep the game running until the player defeats the entire fleet.
     while True:
