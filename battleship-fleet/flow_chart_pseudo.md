@@ -1,4 +1,76 @@
-# Store all possible column letters on the board.
+Flowchart:
+
+START
+  │
+  ▼
+Create game state
+  │
+  ▼
+Generate legal shots
+  │
+  ▼
+Ask player for a cell
+  │
+  ▼
+Is the cell valid?
+  ├── YES ──► Has it already been shot?
+  │              ├── YES ──► Show error ──► Ask again
+  │              │
+  │              └── NO ──► Add shot
+  │                           │
+  │                           ▼
+  │                    Is it a ship cell?
+  │                     ├── YES ──► Are all ship cells hit?
+  │                     │             ├── YES ──► Ship sunk
+  │                     │             └── NO ──► Hit
+  │                     │
+  │                     └── NO ──► Miss
+  │
+  └── NO ──► Show "Invalid cell" ──► Ask again
+
+                 │
+                 ▼
+         Have all ships sunk?
+             ├── YES ──► Fleet defeated ──► END
+             │
+             └── NO ──► Continue game
+                           │
+                           └──► Generate legal shots
+
+
+Psuedocode:
+
+START
+
+SET columns to A-J
+SET rows to 1-10
+CREATE BOARD_CELLS using every column and row combination
+
+SET FLEET to:
+    carrier = 5
+    battleship = 4
+    cruiser = 3
+    submarine = 3
+    destroyer = 2
+
+
+FUNCTION cell_position(cell):
+    GET first character as column
+    GET remaining characters as row
+    CONVERT row to integer
+    RETURN column and row
+
+
+FUNCTION validate_ship_position(cells):
+    CONVERT each cell into a column and row
+
+    IF all rows are the same THEN
+        CONVERT columns into numbers
+        SORT column numbers
+
+        IF column numbers are consecutive THEN
+            RETURN TRUE
+        ELSE# Store all possible column letters on the board.
 COLUMNS = "ABCDEFGHIJ" # This stores A-J as a string of 10 letters
 
 # Store all possible row numbers on the board.
@@ -380,3 +452,160 @@ def play_game():
 
 if __name__ == "__main__":
     play_game()
+
+        SORT row numbers
+
+        IF row numbers are consecutive THEN
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+
+    RETURN FALSE
+
+
+FUNCTION validate_state(state):
+
+    IF state does not contain "ships" OR "shots" THEN
+        RAISE an error
+
+    IF ships is not a dictionary THEN
+        RAISE an error
+
+    IF shots is not a list THEN
+        RAISE an error
+
+    IF the required ships are not present THEN
+        RAISE an error
+
+    FOR each ship:
+        CHECK that the ship has the correct number of cells
+        CHECK that the ship has no duplicate cells
+        CHECK that every cell is on the board
+        CHECK that ships do not overlap
+        CHECK that the ship is straight and consecutive
+
+    CHECK that there are no duplicate shots
+    CHECK that every shot is on the board
+
+    RETURN TRUE
+
+
+FUNCTION parse_state(text):
+
+    SPLIT text into ship information and shot information
+
+    CREATE empty ships dictionary
+
+    FOR each ship:
+        GET ship name
+        GET cells occupied by the ship
+        STORE ship and cells in dictionary
+
+    CREATE shots list
+
+    RETURN state containing ships and shots
+
+
+FUNCTION generate_legal_shots(state):
+
+    CREATE empty legal_shots list
+
+    FOR every cell on the board:
+        IF cell has NOT already been shot THEN
+            ADD cell to legal_shots
+
+    RETURN legal_shots
+
+
+FUNCTION apply_shot(state, cell):
+
+    REMOVE spaces from cell
+    CONVERT cell to uppercase
+
+    IF cell is NOT on the board THEN
+        RAISE "invalid cell" error
+
+    IF cell is already in shots THEN
+        RAISE "cell has already been fired at" error
+
+    ADD cell to shots
+
+    FOR each ship:
+        IF cell belongs to the ship THEN
+
+            CHECK whether every cell of the ship
+            has been shot
+
+            IF every cell has been shot THEN
+
+                CHECK whether every ship in the fleet
+                has been completely shot
+
+                IF every ship has been shot THEN
+                    fleet_defeated = TRUE
+                ELSE
+                    fleet_defeated = FALSE
+
+                RETURN "sunk" and fleet status
+
+            ELSE
+                RETURN "hit"
+
+    RETURN "miss"
+
+
+FUNCTION all_ships_sunk(state):
+
+    FOR each ship:
+        FOR each cell belonging to that ship:
+            IF cell has NOT been shot THEN
+                RETURN FALSE
+
+    RETURN TRUE
+
+
+FUNCTION display_result(result):
+
+    IF result is "hit" THEN
+        RETURN "Hit!"
+
+    ELSE IF result is "miss" THEN
+        RETURN "Miss!"
+
+    ELSE IF result starts with "sunk:" THEN
+        GET ship name
+        RETURN "Hit! You sank the ship!"
+
+    ELSE
+        RETURN "Unknown result."
+
+
+FUNCTION play_game():
+
+    CREATE starting game state
+    PLACE all five ships
+    SET shots to an empty list
+
+    WHILE TRUE:
+
+        GENERATE legal shots
+        DISPLAY legal shots
+
+        ASK player to enter a cell
+
+        TRY to apply the shot
+
+        IF an error occurs THEN
+            DISPLAY error
+            CONTINUE
+
+        DISPLAY shot result
+
+        IF all ships are sunk THEN
+            DISPLAY "Fleet defeated! Game over!"
+            BREAK
+
+        ELSE
+            DISPLAY "Fleet undefeated. The game continues!"
+
+END

@@ -200,10 +200,14 @@ def parse_state(text):
     ]
 
     # Return the complete game state.
-    return {
+    state = {
         "ships": ships,
         "shots": shots
     }
+
+    validate_state(state)
+
+    return state
 
 
 # Find all cells where the player can legally shoot.[Hafsa and Lawerence]
@@ -325,17 +329,7 @@ def display_result(result):
 # Create the starting game state.
 # "ships" stores each ship and the cells it occupies.
 # "shots" starts as an empty list because no shots have
-def play_game():
-    state = {
-        "ships": {
-            "carrier": ["A1", "A2", "A3", "A4", "A5"],
-            "battleship": ["C1", "C2", "C3", "C4"],
-            "cruiser": ["E1", "E2", "E3"],
-            "submarine": ["G1", "G2", "G3"],
-            "destroyer": ["I1", "I2"]
-        },
-        "shots": []
-    }
+def play_game(state):
 
     # Keep the game running until the player defeats the entire fleet.
     while True:
@@ -378,6 +372,23 @@ def play_game():
             # At least one ship remains.
             print("Fleet undefeated. The game continues!")
 
+# Create the starting game state.
+state = {
+    "ships": {
+        "carrier": ["A1", "A2", "A3", "A4", "A5"],
+        "battleship": ["C1", "C2", "C3", "C4"],
+        "cruiser": ["E1", "E2", "E3"],
+        "submarine": ["G1", "G2", "G3"],
+        "destroyer": ["I1", "I2"]
+    },
 
+    # No shots have been fired at the beginning.
+    "shots": []
+}
+
+# Check whether this file is being run directly.
+# This prevents the game from starting when the file is imported by the unittest file.
 if __name__ == "__main__":
-    play_game()
+    
+    # Start the game and give it the starting state.
+    play_game(state)
