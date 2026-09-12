@@ -119,95 +119,96 @@ def validate_state(state): # This function checks that the game state is legal
     occupied_cells = set() # This set will hold the cells occupied by ships
 
     # Validate every ship.
-    for ship, cells in ships.items(): # This for-loop separates the ships and 
+    for ship, cells in ships.items(): # This for-loop separates the ship name and the cells it occupies in the ships dictionary
 
         # Get the required size of this ship.
-        required_size = FLEET[ship]
+        required_size = FLEET[ship] # This variable gets the required size of the ship from the FLEET dictionary
 
         # Check the number of cells.
-        if len(cells) != required_size:
+        if len(cells) != required_size: # This if-statement checks that the length of the ship cells matches the required size
             raise ValueError(f"{ship} must occupy {required_size} cells.") 
             # If the ship isn't the correct length, raise ValueError with this string
 
         # Check for duplicate cells within the ship.
-        if len(set(cells)) != len(cells):
+        if len(set(cells)) != len(cells): # This if-statement checks that all the ship cells are unique
             raise ValueError(f"{ship} contains duplicate cells.")
             # If any of the same cells are selected for a ship , raise ValueError with this string
 
         # Check that every ship cell exists on the board.
-        for cell in cells:
-            if cell not in BOARD_CELLS:
+        for cell in cells: # This for-loop iterates through every cell in the ship's cells list
+            if cell not in BOARD_CELLS: # This if-statement checks that the cell exists in the BOARD_CELLS list
                 raise ValueError(f"Invalid ship cell: {cell}.") 
                 # If the cell chosen doesn't exist on the board, raise ValueError with this string
 
             # Check for overlap with another ship.
-            if cell in occupied_cells:
+            if cell in occupied_cells: # This if-statement checks that the cell is not already occupied by another ship
                 raise ValueError(f"Ships cannot overlap at {cell}.") 
                 # If a ship overlaps with another ship, raise ValueError with this string
 
-            occupied_cells.add(cell)
+            occupied_cells.add(cell) # This adds new cells to the occupied_cells set
 
         # Check that the ship is straight and contiguous.
-        if not validate_ship_position(cells):
+        if not validate_ship_position(cells): # This if-statement checks that the ship cells are in a straight line and contiguous
             raise ValueError(f"{ship} must occupy consecutive horizontal or vertical cells.") 
             # If ship coordinants aren't horizontal or vertical, raise ValueError with this string
 
     # Check for duplicate shots.
-    if len(set(shots)) != len(shots):
+    if len(set(shots)) != len(shots): # This if-statement checks that all the shots are unique
         raise ValueError("Shots cannot contain duplicates.")
         # If a shot is made more than once, raise ValueError with this string
 
     # Check that every shot is a valid board cell.
-    for shot in shots:
-        if shot not in BOARD_CELLS:
-            raise ValueError(f"Invalid shot cell: {shot}.")
+    for shot in shots:# This for-loop iterates through every shot in the shots list
+        if shot not in BOARD_CELLS: # This if-statement checks that the shot exists in the BOARD_CELLS list
+            raise ValueError(f"Invalid shot cell: {shot}.") 
             # If shot doesn't exist on the board, raise ValueError with this string
 
     # The state is valid.
-    return True
+    return True # This returns to the sender that the state is valid
 
 # Convert the text version of a game state into a dictionary.
-def parse_state(text):
+def parse_state(text): 
 
     # Split the text into the ship information and shot information.
-    ships_str, shots_str = text.split("|")
+    ships_str, shots_str = text.split("|") # This splits the text into two variables at the "|" character
 
     # Create an empty dictionary to store the ships.
-    ships = {}
+    ships = {} # This creates an empty dictionary to store the ships and their cells
 
-    # Go through each ship in the ship section.
-    for ship in ships_str.strip().split(";"):
+    # This for-loop iterates through every ship in the ships_str variable, stripping whitespace and splitting at the ";" 
+    for ship in ships_str.strip().split(";"): 
 
         # Skip empty ship entries.
-        if not ship.strip():
-            continue
+        if not ship.strip(): # This if-statement checks if the ship variable is empty after stripping whitespace
+            continue # This continues to the next iteration of the loop
 
         # Split the ship name from the cells it occupies.
-        name, cells = ship.split(":")
+        name, cells = ship.split(":") # This splits the ship variable into two variables at the ":" character
 
         # Remove extra spaces and store the ship's cells.
+        # This creates a dictionary with the ship name as the key and strips the name of whitespace
         ships[name.strip()] = [
-            cell.strip()
-            for cell in cells.split(",")
-            if cell.strip()
+            cell.strip() # This strips the cell of whitespace and adds it to the list of cells for the ship
+            for cell in cells.split(",") # This for-loop goes through every cell in the cells variable, splitting at the "," 
+            if cell.strip() # This if statement checks for empty cells after stripping whitespace
         ]
 
-    # Remove extra spaces and turn the shots into a list.
-    shots = [
-        shot.strip()
-        for shot in shots_str.strip().split(",")
-        if shot.strip()
+    # Remove extra spaces and store the shots in a list.
+    shots = [ 
+        shot.strip() # This strips the shot of whitespace and adds it to the list of shots
+        for shot in shots_str.strip().split(",") # This for-loop goes through the shots_str variable, splitting at the ","
+        if shot.strip() # This if statement checks for empty shots after stripping whitespace
     ]
 
     # Return the complete game state.
-    state = {
-        "ships": ships,
-        "shots": shots
-    }
+    state = { # This is the start of dictionary syntax
+        "ships": ships, # This stores the ships dictionary in the state dictionary
+        "shots": shots # This stores the shots list in the state dictionary
+    } # This is the end of dictionary syntax
 
-    validate_state(state)
+    validate_state(state) # This calls the validate_state function to check that the state is valid
 
-    return state
+    return state # This returns the state dictionary to the sender
 
 
 # Find all cells where the player can legally shoot.[Hafsa and Lawerence]
@@ -287,7 +288,8 @@ def all_ships_sunk(state):
     return True
 
 
-# This function converts the result from apply_shot() into a message that is easier for the player to understand.[Hannah]
+# This function converts the result from apply_shot() into a message 
+# that is easier for the player to understand.[Hannah]
 def display_result(result):
 
     # Get the actual results from the dictionary.
