@@ -53,14 +53,14 @@ def validate_ship_position(cells): # This function checks that the ships are pla
 
         # Convert column letters into their numeric positions.
         column_numbers = [ # This is the start of list syntax
-            COLUMNS.index(column) # The index function calls for the "column" position in the "COLUMN" sequence 
-            for column in columns # This for-loop uses the above code to create a list of column index numbers
+            COLUMNS.index(column) # Index calls for the "column" position(ex."A") in the "COLUMN" sequence(ex."ABCDEFGHIJ") 
+            for column in columns # This for-loop iteration converts every column letter into an index in the COLUMNS string
         ] # This is the end of list syntax
 
         # Sort the columns.
-        column_numbers.sort() # The sort function arranges the number from smallest to largest
+        column_numbers.sort() # The sort function arranges the numbers from smallest to largest
 
-        # Check that the columns are consecutive.
+        # This list creates a sequencial range test for the columns_numbers list
         expected = list( # This is the start of list syntax
             range( # This range creates a sequence of column numbers
                 column_numbers[0],  # This is the first number in out range because it is the smallest number in the sequence
@@ -68,7 +68,7 @@ def validate_ship_position(cells): # This function checks that the ships are pla
             )
         ) # This is the end of list syntax
 
-        return column_numbers == expected # This return function saves whether or not the 2 lists are identical
+        return column_numbers == expected  # This returns True if column_numbers is sequencial
 
     # Check whether the ship is vertical.
     if len(set(columns)) == 1: # This if-statement removes repeats, then checks that the length of the list is 1
@@ -76,7 +76,7 @@ def validate_ship_position(cells): # This function checks that the ships are pla
         # Sort the row numbers.
         rows.sort() # The sort function arranges the number from smallest to largest
 
-        # Check that the rows are consecutive.
+        # This list creates a sequencial range test for the rows list
         expected = list( # This is the start of list syntax
             range( # This range creates a sequence of row numbers
                 rows[0], # This is the first number in out range because it is the smallest number in the sequence
@@ -84,7 +84,7 @@ def validate_ship_position(cells): # This function checks that the ships are pla
             )
         ) # This is the end of list syntax
 
-        return rows == expected # This return function saves whether or not the 2 lists are identical
+        return rows == expected  # This returns True if rows is sequencial
 
     # The ship is neither horizontal nor vertical.
     return False # This returns to the sender that the position is invalid
