@@ -1,5 +1,5 @@
 import unittest
-import battleship
+import battleship_final
 
 
 class TestBattleshipShots(unittest.TestCase):
@@ -34,7 +34,7 @@ class TestBattleshipShots(unittest.TestCase):
             "shots": ["A1", "B7"]
         }
 
-        legal = battleship.generate_legal_shots(state)
+        legal = battleship_final.generate_legal_shots(state)
 
         self.assertNotIn("A1", legal)
         self.assertNotIn("B7", legal)
@@ -46,7 +46,7 @@ class TestBattleshipShots(unittest.TestCase):
             "shots": []
         }
 
-        result = battleship.apply_shot(state, "A1")
+        result = battleship_final.apply_shot(state, "A1")
 
         self.assertEqual(result["result"], "hit")
         self.assertIn("A1", state["shots"])
@@ -57,7 +57,7 @@ class TestBattleshipShots(unittest.TestCase):
             "shots": []
         }
 
-        result = battleship.apply_shot(state, "B7")
+        result = battleship_final.apply_shot(state, "B7")
 
         self.assertEqual(result["result"], "miss")
         self.assertIn("B7", state["shots"])
@@ -68,7 +68,7 @@ class TestBattleshipShots(unittest.TestCase):
             "shots": ["I1"]
         }
 
-        result = battleship.apply_shot(state, "I2")
+        result = battleship_final.apply_shot(state, "I2")
 
         self.assertEqual(result["result"], "sunk:destroyer")
         self.assertIn("I2", state["shots"])
@@ -80,7 +80,7 @@ class TestBattleshipShots(unittest.TestCase):
         }
 
         with self.assertRaises(ValueError):
-            battleship.apply_shot(state, "A1")
+            battleship_final.apply_shot(state, "A1")
 
     def test_fleet_not_defeated_until_all_ships_are_sunk(self):
         state = {
@@ -94,7 +94,7 @@ class TestBattleshipShots(unittest.TestCase):
             ]
         }
 
-        result = battleship.apply_shot(state, "I2")
+        result = battleship_final.apply_shot(state, "I2")
 
         self.assertEqual(result["result"], "sunk:destroyer")
         self.assertTrue(result["fleet_defeated"])
@@ -110,7 +110,7 @@ class TestBattleshipShots(unittest.TestCase):
             ]
         }
 
-        result = battleship.apply_shot(state, "I1")
+        result = battleship_final.apply_shot(state, "I1")
 
         self.assertEqual(result["result"], "hit")
         self.assertFalse(result["fleet_defeated"])
@@ -125,7 +125,7 @@ class TestBattleshipShots(unittest.TestCase):
             " | A1,B7"
         )
 
-        state = battleship.parse_state(text)
+        state = battleship_final.parse_state(text)
 
         self.assertEqual(
             state["ships"],
