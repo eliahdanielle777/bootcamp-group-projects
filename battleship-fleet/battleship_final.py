@@ -336,17 +336,11 @@ def display_result(result):
 # "ships" stores each ship and the cells it occupies.
 # "shots" starts as an empty list because no shots have
 def play_game():
-    state = {
-        "ships": {
-            "carrier": ["A1", "A2", "A3", "A4", "A5"],
-            "battleship": ["C1", "C2", "C3", "C4"],
-            "cruiser": ["E1", "E2", "E3"],
-            "submarine": ["G1", "G2", "G3"],
-            "destroyer": ["I1", "I2"]
-        },
-        "shots": []
-    }
-
+    
+    text = "carrier:A1,A2,A3,A4,A5;battleship:C1,C2,C3,C4;cruiser:E1,E2,E3;submarine:G1,G2,G3;destroyer:I1,I2 | A1,C2,B7"
+    state = parse_state(text)
+    validate_state(state) # This calls the validate_state function to check that the state is valid
+    parse_state(text) # This calls the parse_state function to convert the state into a dictionary
     # Keep the game running until the player defeats the entire fleet.
     while True:
 

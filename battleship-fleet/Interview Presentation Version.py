@@ -365,24 +365,18 @@ def apply_shot(state, cell):
                         break
                         # Stops the loop because one unsunk ship is enough.
 
-                return {
-                    "result": f"sunk:{ship}",
-                    "fleet_defeated": fleet_defeated
-                }
-                # Returns a dictionary describing the result.
+ # Check if the ship has sunk but the fleet is not defeated.
+                if not fleet_defeated:
+                    return {"result":f"sunk:{ship}","fleet_defeated":False}
 
-            return {
-                "result": "hit",
-                "fleet_defeated": False
-            }
-            # The shot hit a ship, but the ship is not sunk.
+                #The sunk result and fleet status when every ship is defeated.
+                return {"result":f"sunk:{ship}","fleet_defeated":True}
 
-    return {
-        "result": "miss",
-        "fleet_defeated": False
-    }
-    # If no ship contained the cell, the shot was a miss.
+            #a normal hit because the ship still has cells remaining 
+            return {"result":"hit","fleet_defeated":False} 
 
+    #return miss when the shot did not hit any ship. 
+    return{"result":"miss","fleet_defeated":False}               
 
 # Check whether every ship in the fleet has been completely hit.
 def all_ships_sunk(state):
@@ -433,77 +427,55 @@ def display_result(result):
     # else runs when none of the previous conditions were True.
 
 
-# Run the main game loop.
-def play_game(state):
+def play_game():
 
+    text = "carrier:A1,A2,A3,A4,A5;battleship:C1,C2,C3,C4;cruiser:E1,E2,E3;submarine:G1,G2,G3;destroyer:I1,I2 | A1,C2,B7"
+    # This string represents the initial game state, including ship positions and shots fired.
+    state = parse_state(text) # This calls the parse_state function to convert the state into a dictionary
+
+    validate_state(state) # This calls the validate_state function to check that the state is valid
+    parse_state(text) # This calls the parse_state function to convert the state into a dictionary
+    # Keep the game running until the player defeats the entire fleet.
     while True:
-        # while repeats the code as long as its condition is True.
-        # True is always True, so the loop continues until break.
 
+        # Find all the cells that have not been shot yet.
         legal_shots = generate_legal_shots(state)
-        # Calls the function that finds available cells.
 
+        # Show the player which cells they can choose from.
         print("Legal shots:", legal_shots)
-        # print() displays information in the console.
 
+        # Ask the player which cell they want to shoot.
         cell = input("Enter a cell to shoot (for example A1): ")
-        # input() asks the player for text.
-        # The player's response is stored in cell.
 
+        # Try to apply the player's shot.
         try:
-            # try begins a section of code where an error may occur.
 
+            # Apply a shot to the game.
             result = apply_shot(state, cell)
-            # Attempts to apply the player's shot.
 
+        # If the player enters an invalid or repeated cell,
+        # show the error message and ask them to try again.
         except ValueError as error:
-            # except handles a ValueError raised by apply_shot().
-            # The error object is stored in the variable error.
-
             print(error)
-            # Displays the error message.
-
             continue
-            # Restarts the while loop without executing the remaining code.
 
+        # Display the result of the shot.
         print(display_result(result))
-        # Converts the result into a readable message and displays it.
 
+        # Check whether all ships have been sunk.
         if all_ships_sunk(state):
-            # Checks whether every ship has been destroyed.
 
+            # The player has destroyed every ship.
             print("Fleet defeated! Game over!")
 
+            # Stop the game.
             break
-            # Stops the while loop.
 
-        print("Fleet undefeated. The game continues!")
-        # Runs if at least one ship remains.
+        else:
 
-
-# Create the starting game state.
-state = {
-    "ships": {
-        "carrier": ["A1", "A2", "A3", "A4", "A5"],
-        "battleship": ["C1", "C2", "C3", "C4"],
-        "cruiser": ["E1", "E2", "E3"],
-        "submarine": ["G1", "G2", "G3"],
-        "destroyer": ["I1", "I2"]
-    },
-    "shots": []
-}
-# The outer {} creates the game-state dictionary.
-# "ships" contains another dictionary of ships and their cells.
-# "shots" contains a list of cells that have been fired at.
+            # At least one ship remains.
+            print("Fleet undefeated. The game continues!")
 
 
-# Only start the game when this file is run directly.
 if __name__ == "__main__":
-    # __name__ is a special Python variable.
-    # When this file is run directly, __name__ equals "__main__".
-    # This prevents play_game() from running automatically
-    # if the file is imported by another Python file.
-
-    play_game(state)
-    # Calls the game function using the starting state.
-
+    play_game()
