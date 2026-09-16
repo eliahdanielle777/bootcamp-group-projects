@@ -20,7 +20,7 @@ FLEET = { # This is the start of dictionary syntax
     "destroyer": 2, # This is a key-value pair in which "destroyer" is the key and 2 is the value
 } # This is the end of dictionary syntax
 
-# Convert a cell such as "A1" into a column and row.
+# Convert a cell such as "A1" into a column and row. [Eliah]
 def cell_position(cell): # This is a function that will return coordinants as a tuple 
 
     # Get the column letter.
@@ -33,7 +33,7 @@ def cell_position(cell): # This is a function that will return coordinants as a 
     return column, row # This creates the tuple using the comma and saves the result to the programme
 
 # Check whether all cells belonging to a ship form one straight horizontal or vertical line
-def validate_ship_position(cells): # This function checks that the ships are placed linear on the grid
+def validate_ship_position(cells): # This function checks that the ships are placed linear on the grid [Eliah]
 
     # Convert every cell into a column and row
     positions = [ # This is the start of list syntax
